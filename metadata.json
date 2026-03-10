@@ -1,0 +1,7 @@
+{
+  "name": "GeoSense Pro: AI Climate Intelligence",
+  "description": "Next-gen climate risk platform with ESP32 sensor integration and real-world Google Maps grounding for safety insights.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
