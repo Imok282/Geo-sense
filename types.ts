@@ -154,3 +154,30 @@ export interface SustainabilityReport {
   metrics: ComplianceMetric[];
   roadmap: string[];
 }
+
+// ─── HARDWARE NODE TYPES (Water Intelligence Node) ───────────────────────────
+
+/** Raw JSON payload from ESP32 /telemetry endpoint */
+export interface LiveData {
+  tds: number;      // ppm  — TDS sensor (GPIO 35)
+  w1: number;       // cm   — HC-SR04 #1 drain overflow (GPIO 5/18), -1 = no echo
+  w2: number;       // cm   — HC-SR04 #2 tank level (GPIO 19/23),    -1 = no echo
+  uptime: number;   // seconds since boot
+  rssi: number;     // dBm  — WiFi signal strength
+}
+
+/** Rolling history arrays (max 30 readings each) */
+export interface HistoryData {
+  tds: number[];
+  w1: number[];
+  w2: number[];
+}
+
+/** Heuristic risk scores derived locally from LiveData (0–100 each) */
+export interface RiskScores {
+  tds: number;       // water contamination risk
+  flood: number;     // combined flood risk (drain + tank weighted)
+  drain: number;     // drain overflow risk from HC-SR04 #1
+  tank: number;      // tank fill percentage (higher = more full)
+  composite: number; // overall node risk
+}

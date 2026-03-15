@@ -274,3 +274,42 @@ body { font-family: var(--body); background: var(--bg); color: var(--text); disp
 .badge-warn { background: #ffc94015; color: var(--yellow); border: 1px solid #ffc94030; }
 .badge-danger { background: #ff2d5515; color: var(--red); border: 1px solid #ff2d5530; }
 .badge-info { background: #2dc8f015; color: var(--blue); border: 1px solid #2dc8f030; }
+
+/* ── BRAND AREA (Sidebar header) ── */
+.brand-area { display: flex; align-items: center; gap: 12px; padding: 20px 16px 20px; border-bottom: 1px solid var(--border); }
+.brand-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--green); color: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
+.brand-text { display: flex; flex-direction: column; }
+.brand-title { font-family: var(--mono); font-size: 12px; font-weight: 800; letter-spacing: 3px; color: var(--text); }
+.brand-ver { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; color: var(--dim); margin-top: 2px; }
+
+/* ── SYS STATUS BOX (Sidebar footer) ── */
+.sys-status-box { margin-top: auto; padding: 14px; border-top: 1px solid var(--border); }
+.ss-inner { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.ss-lbl { font-family: var(--mono); font-size: 8px; letter-spacing: 2px; color: var(--dim); text-transform: uppercase; }
+.ss-val { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 6px; }
+.ss-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: livepulse 2s ease-in-out infinite; flex-shrink: 0; }
+
+/* ── MAIN HEADER (Inside #content) ── */
+#main-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--s1); border-bottom: 1px solid var(--border); flex-shrink: 0; z-index: 5; }
+.mh-left { display: flex; align-items: center; gap: 12px; }
+.mh-back { width: 28px; height: 28px; background: var(--s2); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--mid); font-size: 11px; cursor: pointer; transition: background .15s; font-family: var(--mono); user-select: none; }
+.mh-back:hover { background: var(--s3); color: var(--text); }
+.mh-title { font-family: var(--mono); font-size: 12px; font-weight: 800; letter-spacing: 3px; color: var(--text); }
+.mh-right { display: flex; align-items: center; gap: 10px; }
+.mh-pill { background: var(--s2); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-family: var(--mono); font-size: 9px; color: var(--mid); display: flex; align-items: center; gap: 6px; }
+.mh-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--green); color: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; font-weight: 800; flex-shrink: 0; }
+
+/* ── CONTENT + PAGE CONTAINER (React layout override) ── */
+#content { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+#page-container { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.page { display: block; padding: 18px; }
+
+/* ── SENSOR OFFLINE PAGE ── */
+.offline-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 20px; text-align: center; padding: 40px 20px; }
+.offline-icon { font-size: 48px; opacity: 0.3; }
+.offline-title { font-family: var(--mono); font-size: 18px; font-weight: 800; letter-spacing: 2px; color: var(--text); }
+.offline-sensor { font-family: var(--mono); font-size: 10px; letter-spacing: 2px; color: var(--green); text-transform: uppercase; padding: 4px 12px; border: 1px solid #00e0a030; border-radius: 4px; background: #00e0a010; }
+.offline-desc { font-size: 13px; color: var(--mid); max-width: 420px; line-height: 1.7; }
+.offline-steps { background: var(--s1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; max-width: 380px; width: 100%; text-align: left; display: flex; flex-direction: column; gap: 10px; }
+.offline-step { display: flex; gap: 10px; align-items: flex-start; font-family: var(--mono); font-size: 10px; color: var(--mid); line-height: 1.5; }
+.offline-step-num { color: var(--green); font-weight: 700; flex-shrink: 0; }
