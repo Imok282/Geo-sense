@@ -313,3 +313,134 @@ body { font-family: var(--body); background: var(--bg); color: var(--text); disp
 .offline-steps { background: var(--s1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; max-width: 380px; width: 100%; text-align: left; display: flex; flex-direction: column; gap: 10px; }
 .offline-step { display: flex; gap: 10px; align-items: flex-start; font-family: var(--mono); font-size: 10px; color: var(--mid); line-height: 1.5; }
 .offline-step-num { color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   NEW FEATURE STYLES — GeoSense Pro v3.0 (100-120 feature expansion)
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── FEATURE 102: Toast notifications ── */
+@keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ── FEATURE 104: Sidebar collapse transition ── */
+#sidebar { transition: width 0.2s ease; }
+#sidebar .brand-area { overflow: hidden; white-space: nowrap; }
+
+/* ── FEATURE 108: Command palette ── */
+.cmd-palette-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9998; display: flex; align-items: flex-start; justify-content: center; padding-top: 80px; }
+.cmd-palette-box { background: var(--s1); border: 1px solid var(--b2); border-radius: 12px; width: 480px; max-height: 420px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+.cmd-input { width: 100%; background: transparent; border: none; outline: none; font-family: var(--mono); font-size: 12px; color: var(--text); padding: 12px 14px; }
+.cmd-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); transition: background 0.1s; }
+.cmd-row:hover { background: var(--s2); }
+.cmd-row-label { font-family: var(--mono); font-size: 10px; color: var(--text); font-weight: 600; width: 130px; flex-shrink: 0; }
+.cmd-row-hint { font-family: var(--mono); font-size: 9px; color: var(--dim); }
+
+/* ── FEATURE 110: Alert count badge (animated) ── */
+.alert-count-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; border-radius: 9px; background: var(--red); color: #fff; font-family: var(--mono); font-size: 8px; font-weight: 800; padding: 0 4px; animation: bwarn 1s step-end infinite; }
+
+/* ── FEATURES 13-24: Air Quality page ── */
+.aqi-bar { height: 8px; border-radius: 4px; overflow: hidden; background: var(--border); }
+.aqi-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+
+/* ── FEATURES 25-36: Structural page ── */
+.vib-gauge { display: flex; flex-direction: column; gap: 6px; padding: 14px; }
+.vib-axis { display: flex; align-items: center; gap: 8px; }
+.vib-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.vib-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+/* ── FEATURES 37-48: Weather page ── */
+.weather-week { display: flex; flex-direction: column; gap: 4px; padding: 10px 14px; }
+.weather-day-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.weather-day-label { font-family: var(--mono); font-size: 8px; color: var(--dim); width: 28px; flex-shrink: 0; }
+
+/* ── FEATURES 49-60: Seismic page ── */
+.seismic-waveform { position: relative; }
+.seismic-event-badge { display: inline-block; font-family: var(--mono); font-size: 7px; font-weight: 700; padding: 2px 6px; border-radius: 3px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── FEATURES 61-70: Alert Center page ── */
+.alert-item { border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; transition: opacity 0.3s; }
+.alert-item.acked { opacity: 0.5; }
+.alert-severity-tag { font-family: var(--mono); font-size: 7px; font-weight: 700; letter-spacing: 1px; padding: 3px 6px; border-radius: 3px; text-transform: uppercase; flex-shrink: 0; }
+.alert-ack-btn { font-family: var(--mono); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; border: 1px solid; transition: opacity 0.2s; }
+.alert-ack-btn:hover { opacity: 0.7; }
+.alert-filter-btn { font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 4px; cursor: pointer; border: 1px solid; transition: all 0.15s; text-transform: uppercase; }
+
+/* ── FEATURES 71-80: Settings page ── */
+.settings-toggle { width: 36px; height: 20px; border-radius: 10px; cursor: pointer; position: relative; transition: background 0.2s; }
+.settings-toggle-knob { position: absolute; top: 3px; width: 14px; height: 14px; border-radius: 50%; transition: left 0.2s; }
+.settings-option-card { flex: 1; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.15s; }
+.settings-color-dot { width: 36px; height: 36px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.settings-range { width: 100%; accent-color: var(--green); }
+
+/* ── FEATURES 81-90: Reports page ── */
+.report-tab-bar { display: flex; gap: 2px; border-bottom: 1px solid var(--border); }
+.report-tab { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 1px; padding: 8px 16px; cursor: pointer; border: none; background: transparent; text-transform: uppercase; transition: color 0.15s; }
+.report-export-btn { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 1px; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: opacity 0.2s; }
+.report-export-btn:hover { opacity: 0.75; }
+.report-stat-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); }
+.report-stat-key { font-family: var(--mono); font-size: 9px; color: var(--dim); }
+.report-stat-val { font-family: var(--mono); font-size: 9px; color: var(--mid); font-weight: 600; }
+
+/* ── FEATURES 91-100: System Health page ── */
+.sensor-matrix-row { display: flex; align-items: center; gap: 10px; padding: 7px 14px; border-bottom: 1px solid var(--border); }
+.sensor-online-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.sensor-status-label { font-family: var(--mono); font-size: 7px; font-weight: 700; letter-spacing: 1px; }
+.event-log-row { display: flex; gap: 10px; padding: 7px 14px; border-bottom: 1px solid var(--border); }
+.event-log-time { font-family: var(--mono); font-size: 7px; color: var(--dim); width: 55px; flex-shrink: 0; }
+.event-log-type { font-family: var(--mono); font-size: 7px; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+.event-log-msg { font-family: var(--mono); font-size: 8px; color: var(--mid); line-height: 1.5; }
+.signal-bar { display: flex; gap: 3px; align-items: flex-end; }
+.signal-segment { width: 8px; border-radius: 2px; }
+
+/* ── FEATURE 111: Data freshness indicator ── */
+.freshness-bar { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; padding: 8px 12px; background: var(--s1); border-radius: 8px; border: 1px solid var(--border); flex-wrap: wrap; }
+.freshness-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ── FEATURE 113: Rate of change arrow ── */
+.rate-arrow { font-family: var(--mono); font-size: 11px; font-weight: 700; }
+
+/* ── FEATURE 114: Anomaly badge ── */
+.anomaly-badge { font-family: var(--mono); font-size: 8px; padding: 2px 8px; border-radius: 4px; background: rgba(255,45,85,0.15); color: var(--red); border: 1px solid rgba(255,45,85,0.3); animation: bwarn 1s step-end infinite; }
+
+/* ── FEATURE 115: Tank fill cylinder ── */
+.tank-cylinder { border-radius: 4px 4px 6px 6px; position: relative; overflow: hidden; }
+.tank-fill-liquid { position: absolute; bottom: 0; left: 0; right: 0; transition: height 0.8s ease; }
+.tank-fill-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; }
+
+/* ── FEATURES 116-120: Risk analytics cards ── */
+.risk-analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.risk-analytic-card { background: var(--s1); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; text-align: center; }
+.risk-analytic-label { font-family: var(--mono); font-size: 7px; color: var(--dim); letter-spacing: 2px; margin-bottom: 6px; text-transform: uppercase; }
+.risk-analytic-val { font-family: var(--mono); font-size: 24px; font-weight: 800; }
+.risk-analytic-desc { font-family: var(--mono); font-size: 7px; color: var(--dim); margin-top: 4px; }
+
+/* ── FEATURE 1-12: Heat page gauges ── */
+.heat-gauge-bar { margin-bottom: 10px; }
+.heat-gauge-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.heat-gauge-label { font-family: var(--mono); font-size: 9px; color: var(--dim); letter-spacing: 1px; }
+.heat-gauge-value { font-family: var(--mono); font-size: 10px; font-weight: 700; }
+.heat-gauge-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.heat-gauge-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+
+/* ── RESPONSIVE: narrow sidebar icon mode ── */
+#sidebar.collapsed { width: 44px !important; }
+#sidebar.collapsed .nav-label,
+#sidebar.collapsed .nav-badge,
+#sidebar.collapsed .sb-section,
+#sidebar.collapsed .sys-status-box { display: none; }
+#sidebar.collapsed .nav-item { justify-content: center; padding: 10px 0; }
+#sidebar.collapsed .nav-icon { width: auto; font-size: 16px; }
+
+/* ── FEATURE 74: Settings slider accent ── */
+input[type=range] { accent-color: var(--green); height: 4px; }
+
+/* ── Misc utility ── */
+.no-select { user-select: none; }
+.cursor-pointer { cursor: pointer; }
+.text-mono { font-family: var(--mono); }
+.gap-8 { gap: 8px; }
+.mt8 { margin-top: 8px; }
+.mt14 { margin-top: 14px; }
+.border-dim { border: 1px solid var(--border); }
+.rounded-8 { border-radius: 8px; }
+.p14 { padding: 14px; }
+.flex-center { display: flex; align-items: center; justify-content: center; }

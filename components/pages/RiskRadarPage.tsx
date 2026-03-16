@@ -89,6 +89,33 @@ const RiskRadarPage: React.FC<Props> = ({ data, history, risks, onNavigate }) =>
   const floodColor = scoreColor(risks.flood);
   const tdsColor   = scoreColor(risks.tds);
 
+  // ─── FEATURE 116: Risk trend prediction ────────────────────────────────────
+  const histLen = compositeHist.length;
+  const predictedRisk = histLen >= 3
+    ? Math.max(0, Math.min(100, Math.round(
+        compositeHist[histLen - 1].v +
+        (compositeHist[histLen - 1].v - compositeHist[histLen - 3].v) / 2
+      )))
+    : risks.composite;
+
+  // ─── FEATURE 117: Historical max ───────────────────────────────────────────
+  const histMax = compositeHist.length ? Math.max(...compositeHist.map(d => d.v)) : 0;
+  const histAvg = compositeHist.length
+    ? Math.round(compositeHist.reduce((a, b) => a + b.v, 0) / compositeHist.length)
+    : 0;
+
+  // ─── FEATURE 118: Delta change ─────────────────────────────────────────────
+  const delta = compositeHist.length >= 2
+    ? compositeHist[compositeHist.length - 1].v - compositeHist[compositeHist.length - 2].v
+    : 0;
+  const deltaLabel = delta > 0 ? `↑ +${delta}` : delta < 0 ? `↓ ${delta}` : '→ 0';
+  const deltaColor = delta > 5 ? C.red : delta > 0 ? C.yellow : delta < 0 ? C.green : C.teal;
+
+  // ─── FEATURE 119: Risk percentile ──────────────────────────────────────────
+  const percentile = compositeHist.length
+    ? Math.round((compositeHist.filter(d => d.v <= risks.composite).length / compositeHist.length) * 100)
+    : 50;
+
   return (
     <div className="page">
       {/* ── ROW 1: Composite + Risk Cards ── */}
@@ -250,12 +277,35 @@ const RiskRadarPage: React.FC<Props> = ({ data, history, risks, onNavigate }) =>
         </div>
       </div>
 
-      {/* ── Offline modules note ── */}
-      <div className="alert-strip as-safe mt">
-        <span>✓</span>
-        <span>
-          3 modules (Heat, Air, Seismic) show N/A — no sensors wired on this node. Navigate to each section for wiring guides to add these capabilities.
-        </span>
+      {/* ─── FEATURE 116-120: Risk analytics panel ── */}
+      <div className="g4 mt">
+        {[
+          { label: 'PREDICTED NEXT',  value: predictedRisk, unit: '/100',  color: scoreColor(predictedRisk), desc: '1-reading forecast' },
+          { label: 'SESSION MAX',     value: histMax,        unit: '/100',  color: scoreColor(histMax),       desc: 'Historical peak' },
+          { label: 'SESSION AVG',     value: histAvg,        unit: '/100',  color: scoreColor(histAvg),       desc: 'Mean composite' },
+          { label: 'DELTA',           value: deltaLabel,     unit: '',      color: deltaColor,                desc: 'Last reading change' },
+        ].map((s, i) => (
+          <div key={i} className="card">
+            <div style={{ padding: '12px 14px', textAlign: 'center' }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 7, color: 'var(--dim)', letterSpacing: 2, marginBottom: 6 }}>{s.label}</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 24, fontWeight: 800, color: s.color }}>{s.value}<span style={{ fontSize: 10, fontWeight: 400 }}>{s.unit}</span></div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 7, color: 'var(--dim)', marginTop: 4 }}>{s.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ─── FEATURE 119: Percentile + threshold link ── */}
+      <div className="g2 mt">
+        <div className="alert-strip as-safe" style={{ margin: 0 }}>
+          <span>◎</span>
+          <span>Current risk {risks.composite}/100 is at the <strong>{percentile}th percentile</strong> of this session's readings. {percentile < 50 ? 'Better than average session conditions.' : 'Above average session risk level.'}</span>
+        </div>
+        {/* ─── FEATURE 120: Threshold config quick link ── */}
+        <div className="alert-strip" style={{ margin: 0, borderColor: 'var(--dim)', background: 'rgba(255,255,255,0.02)', cursor: 'pointer' }} onClick={() => onNavigate('alerts')}>
+          <span>⛭</span>
+          <span>Configure alert thresholds and notification rules in <strong>Alert Center</strong>. Current: TDS warn ≥300 ppm, Flood warn ≥50/100.</span>
+        </div>
       </div>
     </div>
   );

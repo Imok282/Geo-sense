@@ -1,6 +1,6 @@
 
 import { initializeApp, getApps } from 'firebase/app';
-import { getDatabase, ref, onValue, off, DatabaseReference } from 'firebase/database';
+import { getDatabase, ref, onValue, off, set, DatabaseReference } from 'firebase/database';
 import { LiveData } from '../types';
 
 // ─── FIREBASE CONFIG (from .env — copy .env.example → .env) ──────────────────
@@ -50,6 +50,19 @@ export function subscribeToNode(
   );
 
   return unsubscribe;
+}
+
+// ─── WRITE NODE DATA (BLE bridge) ────────────────────────────────────────────
+/**
+ * Writes a single LiveData snapshot to Firebase RTDB.
+ * Called by the BLE bridge in App.tsx on every BLE notification.
+ * Fire-and-forget: errors are logged but not re-thrown.
+ */
+export function writeNodeData(data: LiveData): void {
+  const nodeRef = ref(db, NODE_PATH);
+  set(nodeRef, { ...data, ts: Date.now() }).catch((err) => {
+    console.warn('[Firebase] writeNodeData failed:', err);
+  });
 }
 
 // ─── CHECK IF RTDB IS REACHABLE ───────────────────────────────────────────────

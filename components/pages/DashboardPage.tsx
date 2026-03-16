@@ -64,6 +64,19 @@ function blabel(score: number) {
 const tankPct = (w2: number) =>
   w2 >= 0 ? Math.max(0, Math.min(100, Math.round((1 - w2 / 100) * 100))) : null;
 
+// ─── FEATURE 111: Data freshness indicator ────────────────────────────────────
+const useFreshness = () => {
+  const [lastUpdate, setLastUpdate] = React.useState(Date.now());
+  const [age, setAge] = React.useState(0);
+  React.useEffect(() => { setLastUpdate(Date.now()); setAge(0); }, []);
+  React.useEffect(() => {
+    const t = setInterval(() => setAge(a => a + 1), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const fresh = age < 8;
+  return { age, fresh, color: fresh ? C.green : age < 20 ? C.yellow : C.red };
+};
+
 // ─── DASHBOARD PAGE ───────────────────────────────────────────────────────────
 const DashboardPage: React.FC<Props> = ({ data, history, risks, onNavigate }) => {
   const tds  = data?.tds  ?? 0;
@@ -79,6 +92,31 @@ const DashboardPage: React.FC<Props> = ({ data, history, risks, onNavigate }) =>
   const tankStatus  = tank === null ? 'NO ECHO' : tank > 90 ? 'FULL' : tank > 70 ? 'HIGH' : 'NORMAL';
   const tdsStatus   = tds > 500 ? 'DANGER' : tds > 300 ? 'WARNING' : 'SAFE';
 
+  // ─── FEATURE 111: Freshness ────────────────────────────────────────────────
+  const freshness = useFreshness();
+
+  // ─── FEATURE 112: Rolling statistics ──────────────────────────────────────
+  const tdsArr = history.tds;
+  const tdsAvg = tdsArr.length ? Math.round(tdsArr.reduce((a, b) => a + b, 0) / tdsArr.length) : 0;
+  const tdsMin = tdsArr.length ? Math.round(Math.min(...tdsArr)) : 0;
+  const tdsMax = tdsArr.length ? Math.round(Math.max(...tdsArr)) : 0;
+
+  // ─── FEATURE 113: Rate of change ──────────────────────────────────────────
+  const tdsRate = tdsArr.length >= 2
+    ? Math.round((tdsArr[tdsArr.length - 1] - tdsArr[tdsArr.length - 2]) * 10) / 10
+    : 0;
+  const tdsRateLabel = tdsRate > 1 ? `↑ +${tdsRate}` : tdsRate < -1 ? `↓ ${tdsRate}` : '→ stable';
+  const tdsRateColor = tdsRate > 5 ? C.red : tdsRate > 1 ? C.yellow : tdsRate < -1 ? C.teal : C.green;
+
+  // ─── FEATURE 114: Anomaly detection ───────────────────────────────────────
+  const stdDev = tdsArr.length > 2
+    ? Math.sqrt(tdsArr.reduce((a, b) => a + (b - tdsAvg) ** 2, 0) / tdsArr.length)
+    : 0;
+  const isAnomaly = tdsArr.length > 5 && Math.abs(tds - tdsAvg) > stdDev * 2.5;
+
+  // ─── FEATURE 115: Tank fill visual gauge ──────────────────────────────────
+  const tankFillPct = tank ?? 0;
+
   // Combined water level chart data
   const waterChartData = history.w1.map((v, i) => ({
     i,
@@ -88,6 +126,34 @@ const DashboardPage: React.FC<Props> = ({ data, history, risks, onNavigate }) =>
 
   return (
     <div className="page">
+      {/* ─── FEATURE 111: Freshness + reading stats bar ── */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12, padding: '8px 12px', background: 'var(--s1)', borderRadius: 8, border: '1px solid var(--border)', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: freshness.color, boxShadow: `0 0 6px ${freshness.color}`, animation: freshness.fresh ? 'livepulse 2s ease-in-out infinite' : 'none' }} />
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 8, color: freshness.color, letterSpacing: 1 }}>
+            {freshness.fresh ? 'LIVE' : `LAST UPDATE ${freshness.age}s AGO`}
+          </span>
+        </div>
+        <div style={{ width: 1, height: 12, background: 'var(--border)' }} />
+        {/* ─── FEATURE 112: Stats pills ── */}
+        {[
+          { label: 'AVG TDS', val: `${tdsAvg} ppm`, color: tdsColor },
+          { label: 'MIN',     val: `${tdsMin} ppm`, color: C.green  },
+          { label: 'MAX',     val: `${tdsMax} ppm`, color: tdsMax > 500 ? C.red : C.yellow },
+          { label: 'TREND',   val: tdsRateLabel,    color: tdsRateColor },
+        ].map((s, i) => (
+          <div key={i} style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--dim)' }}>
+            {s.label}: <span style={{ color: s.color, fontWeight: 700 }}>{s.val}</span>
+          </div>
+        ))}
+        {/* ─── FEATURE 114: Anomaly badge ── */}
+        {isAnomaly && (
+          <div style={{ marginLeft: 'auto', fontFamily: 'var(--mono)', fontSize: 8, padding: '2px 8px', borderRadius: 4, background: 'rgba(255,45,85,0.15)', color: C.red, border: '1px solid rgba(255,45,85,0.3)', animation: 'bwarn 1s step-end infinite' }}>
+            ⚡ ANOMALY DETECTED
+          </div>
+        )}
+      </div>
+
       {/* ── ROW 1: Four metric cards ── */}
       <div className="g4">
 
@@ -263,20 +329,52 @@ const DashboardPage: React.FC<Props> = ({ data, history, risks, onNavigate }) =>
         </div>
       </div>
 
-      {/* ── ROW 3: Node stats ── */}
-      <div className="mt">
+      {/* ── ROW 3: Node stats + Tank fill gauge ── */}
+      <div className="g2 mt">
         <div className="card">
           <div className="card-h">
             <div className="card-title">⬡ Node Health</div>
             <span className="badge badge-safe">ONLINE</span>
           </div>
           <div className="stat-grid">
-            <Stat label="TDS Risk"   value={`${risks.tds} / 100`}      color={risks.tds > 66 ? C.red : risks.tds > 33 ? C.yellow : C.green} />
-            <Stat label="Flood Risk" value={`${risks.flood} / 100`}    color={risks.flood > 66 ? C.red : risks.flood > 33 ? C.yellow : C.green} />
-            <Stat label="WiFi RSSI"  value={data ? `${Math.round(data.rssi)} dBm` : '--'} color={C.blue} />
+            <Stat label="TDS Risk"    value={`${risks.tds} / 100`}     color={risks.tds > 66 ? C.red : risks.tds > 33 ? C.yellow : C.green} />
+            <Stat label="Flood Risk"  value={`${risks.flood} / 100`}   color={risks.flood > 66 ? C.red : risks.flood > 33 ? C.yellow : C.green} />
+            <Stat label="WiFi RSSI"   value={data ? `${Math.round(data.rssi)} dBm` : '--'} color={C.blue} />
             <Stat label="Node Uptime" value={data ? `${data.uptime}s` : '--'} />
             <Stat label="Drain Score" value={`${risks.drain} / 100`}   color={risks.drain > 66 ? C.red : risks.drain > 33 ? C.yellow : C.green} />
-            <Stat label="Tank Fill"   value={`${risks.tank} %`}        color={risks.tank > 90 ? C.red : risks.tank > 70 ? C.yellow : C.green} />
+            <Stat label="Std Dev TDS" value={tdsArr.length > 2 ? `${Math.round(Math.sqrt(tdsArr.reduce((a, b) => a + (b - tdsAvg) ** 2, 0) / tdsArr.length))} ppm` : '--'} color={C.teal} />
+          </div>
+        </div>
+
+        {/* ─── FEATURE 115: Tank fill visual gauge ── */}
+        <div className="card">
+          <div className="card-h">
+            <div className="card-title">≉ Tank Fill Level</div>
+            <span className={`badge ${tankFillPct > 90 ? 'badge-danger' : tankFillPct > 70 ? 'badge-warn' : 'badge-safe'}`}>{tankStatus}</span>
+          </div>
+          <div style={{ padding: '14px', display: 'flex', alignItems: 'flex-end', gap: 16 }}>
+            {/* Cylinder visual */}
+            <div style={{ width: 48, height: 120, border: `2px solid ${tankColor}`, borderRadius: '4px 4px 6px 6px', position: 'relative', overflow: 'hidden', background: 'var(--s2)', flexShrink: 0 }}>
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0,
+                height: `${tankFillPct}%`,
+                background: `linear-gradient(180deg, ${tankColor}80, ${tankColor}40)`,
+                transition: 'height 0.8s ease',
+                borderTop: `1px solid ${tankColor}`,
+              }} />
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 800, color: tankColor }}>{tankFillPct}%</div>
+            </div>
+            <div style={{ flex: 1 }}>
+              {[100, 75, 50, 25, 0].map(mark => (
+                <div key={mark} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <div style={{ width: 10, height: 1, background: 'var(--border)' }} />
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: 8, color: tankFillPct >= mark ? tankColor : 'var(--dim)' }}>{mark}%</span>
+                </div>
+              ))}
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 8, color: 'var(--dim)', marginTop: 8 }}>
+                HC-SR04 #2 · {w2 >= 0 ? `${w2.toFixed(1)} cm` : 'No echo'}
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -155,9 +155,13 @@ export interface SustainabilityReport {
   roadmap: string[];
 }
 
+// ─── NODE TYPES ───────────────────────────────────────────────────────────────
+/** Physical ESP32 node variant the browser is currently connected to */
+export type NodeType = 'water' | 'air' | 'climate' | 'seismic';
+
 // ─── HARDWARE NODE TYPES (Water Intelligence Node) ───────────────────────────
 
-/** Raw JSON payload from ESP32 /telemetry endpoint */
+/** Raw JSON payload from ESP32 BLE notification */
 export interface LiveData {
   tds: number;      // ppm  — TDS sensor (GPIO 35)
   w1: number;       // cm   — HC-SR04 #1 drain overflow (GPIO 5/18), -1 = no echo

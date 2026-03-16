@@ -20,7 +20,18 @@ import {
   ArrowUpRight,
   ChevronDown,
   Layers,
-  Database
+  Database,
+  Droplets,
+  CheckCircle,
+  Box,
+  Drone,
+  Lock,
+  Mic,
+  Bird,
+  Thermometer,
+  Cloud,
+  Mountain,
+  Shield
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -284,12 +295,87 @@ const LandingPage: React.FC<LandingPageProps> = ({ onContinue }) => {
                     desc="Multimodal reasoning engine calculating risk levels and compliance roadmap." 
                     icon={<Zap size={24} />} 
                   />
-                  <TechCard 
-                    step="04" 
-                    title="Audit Reports" 
-                    desc="Automated report generation for facility safety and environmental regulatory standards." 
-                    icon={<ClipboardCheck size={24} />} 
-                  />
+                   <TechCard 
+                     step="04" 
+                     title="Audit Reports" 
+                     desc="Automated report generation for facility safety and environmental regulatory standards." 
+                     icon={<ClipboardCheck size={24} />} 
+                   />
+                </div>
+             </div>
+          </div>
+      </section>
+
+      {/* --- SERVICES SECTION --- */}
+      <section id="services" className="py-32 px-6 flex justify-center bg-slate-900 border-y border-slate-800">
+         <div className="w-full max-w-7xl">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-20">
+               <div className="max-w-2xl">
+                  <span className="text-cyan-400 font-bold uppercase text-xs tracking-widest mb-4 block">Our Services</span>
+                  <h2 className="text-5xl md:text-7xl font-extrabold uppercase tracking-tighter leading-none text-white">
+                    Alpine <span className="italic text-cyan-500">Intelligence</span> Services.
+                  </h2>
+               </div>
+               <p className="text-sm font-bold uppercase tracking-widest text-slate-500 max-w-sm">
+                 Specialized solutions for high-alpine environments. Protecting what matters most.
+               </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               {/* Water Resource Monitoring */}
+               <div className="bg-gradient-to-br from-cyan-900/30 to-blue-900/20 border border-cyan-500/20 p-12 rounded-[60px] shadow-2xl relative overflow-hidden group">
+                  <div className="relative z-10">
+                     <div className="w-16 h-16 bg-cyan-600 border border-cyan-500/30 rounded-3xl flex items-center justify-center mb-10 shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform">
+                        <Droplets size={32} className="text-white" />
+                     </div>
+                     <h3 className="text-3xl font-bold uppercase mb-6 tracking-tighter text-white">Water Resource Monitoring</h3>
+                     <p className="text-base font-bold text-slate-400 uppercase leading-relaxed mb-8">
+                       Sustainable surveillance for secure water supply in high-alpine regions. From consultation to installation, we handle everything.
+                     </p>
+                     <ul className="space-y-3">
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-cyan-400" /> Drinking Water Supply Monitoring
+                        </li>
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-cyan-400" /> Flood & Early Warning Systems
+                        </li>
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-cyan-400" /> Leak Detection in Pipelines
+                        </li>
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-cyan-400" /> Snowmelt & Reservoir Management
+                        </li>
+                     </ul>
+                  </div>
+                  <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"></div>
+               </div>
+
+               {/* Visitor Flow Management */}
+               <div className="bg-gradient-to-br from-purple-900/30 to-indigo-900/20 border border-purple-500/20 p-12 rounded-[60px] shadow-2xl relative overflow-hidden group">
+                  <div className="relative z-10">
+                     <div className="w-16 h-16 bg-purple-600 border border-purple-500/30 rounded-3xl flex items-center justify-center mb-10 shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform">
+                        <Users size={32} className="text-white" />
+                     </div>
+                     <h3 className="text-3xl font-bold uppercase mb-6 tracking-tighter text-white">Visitor Flow Management</h3>
+                     <p className="text-base font-bold text-slate-400 uppercase leading-relaxed mb-8">
+                       Intelligent management for ski resorts. Optimize visitor guidance and traffic flow with AI-powered solutions.
+                     </p>
+                     <ul className="space-y-3">
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-purple-400" /> Smart Traffic Control
+                        </li>
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-purple-400" /> Real-time Slope Monitoring
+                        </li>
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-purple-400" /> Smart Parking Solutions
+                        </li>
+                        <li className="flex items-center gap-3 text-slate-300 text-sm font-bold uppercase">
+                           <CheckCircle size={16} className="text-purple-400" /> Restaurant Capacity Management
+                        </li>
+                     </ul>
+                  </div>
+                  <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
                </div>
             </div>
          </div>
@@ -324,6 +410,100 @@ const LandingPage: React.FC<LandingPageProps> = ({ onContinue }) => {
               icon={<Building2 size={32} />} 
               title="Facility ROI" 
               desc="Optimize energy efficiency and resource management through high-precision environmental mapping." 
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* --- WORLD-FIRST FEATURES --- */}
+      <section id="worldfirst" className="py-32 px-6 flex justify-center bg-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-transparent to-cyan-900/20"></div>
+        <div className="absolute inset-0 bg-grid-white/[0.03] bg-[length:50px_50px] pointer-events-none"></div>
+        
+        <div className="w-full max-w-7xl relative z-10">
+          <div className="text-center mb-20 space-y-8">
+            <div className="inline-flex items-center gap-4 bg-gradient-to-r from-violet-600 to-cyan-600 border border-violet-400/30 px-8 py-3 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.4)]">
+              <Zap size={20} />
+              <span className="text-[11px] font-bold uppercase tracking-widest">World-First Innovation</span>
+            </div>
+            <h2 className="text-5xl md:text-8xl font-extrabold uppercase tracking-tighter leading-none text-white">
+              No One Else <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">Has This.</span>
+            </h2>
+            <p className="text-lg font-bold text-slate-400 max-w-2xl mx-auto uppercase tracking-wide">
+              10 exclusive technologies that make GeoSense PRO the most advanced climate intelligence platform on Earth.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <WorldFirstCard 
+              icon={<Box size={28} />}
+              title="Digital Twin"
+              description="3D real-time replica of alpine terrain with predictive flood/landslide simulation."
+              color="#8b5cf6"
+              status="Coming 2026"
+            />
+            <WorldFirstCard 
+              icon={<Drone size={28} />}
+              title="Drone Deployment"
+              description="Autonomous drones deploy sensors to dead zones after storms."
+              color="#06b6d4"
+              status="Coming 2026"
+            />
+            <WorldFirstCard 
+              icon={<Shield size={28} />}
+              title="Gecko Mounts"
+              description="Biomimetic adhesion - sticks to any surface. No drilling required."
+              color="#10b981"
+              status="Coming 2025"
+            />
+            <WorldFirstCard 
+              icon={<Lock size={28} />}
+              title="Quantum Encryption"
+              description="Post-quantum cryptography. Government-grade security."
+              color="#f59e0b"
+              status="Coming 2027"
+            />
+            <WorldFirstCard 
+              icon={<Users size={28} />}
+              title="Citizen Network"
+              description="10,000 hikers wearing sensors. Gamified climate scouts."
+              color="#ec4899"
+              status="Beta"
+            />
+            <WorldFirstCard 
+              icon={<Mic size={28} />}
+              title="Voice Mesh"
+              description="Emergency network works without cell towers. 15km range."
+              color="#ef4444"
+              status="Coming 2026"
+            />
+            <WorldFirstCard 
+              icon={<Bird size={28} />}
+              title="Bioacoustics"
+              description="AI listens to insects & birds. Detects ecosystem collapse."
+              color="#84cc16"
+              status="Pilot"
+            />
+            <WorldFirstCard 
+              icon={<Thermometer size={28} />}
+              title="Thermal Imaging"
+              description="Drone-mounted thermal cameras. Find heat leaks from sky."
+              color="#f97316"
+              status="Available"
+            />
+            <WorldFirstCard 
+              icon={<Cloud size={28} />}
+              title="Carbon Isotopes"
+              description="Distinguish natural vs man-made CO2. Prove emissions source."
+              color="#6366f1"
+              status="Coming 2026"
+            />
+            <WorldFirstCard 
+              icon={<Mountain size={28} />}
+              title="Avalanche AI"
+              description="15-minute avalanche warning. Automatic road closure."
+              color="#0ea5e9"
+              status="Pilot"
             />
           </div>
         </div>
@@ -404,6 +584,24 @@ const ImpactPoint = ({ icon, title, desc }: { icon: any, title: string, desc: st
      </div>
      <h4 className="text-2xl font-bold uppercase mb-4 tracking-tighter text-white">{title}</h4>
      <p className="text-sm font-bold text-slate-400 uppercase leading-relaxed tracking-tight">{desc}</p>
+  </div>
+);
+
+const WorldFirstCard = ({ icon, title, description, color, status }: { icon: any, title: string, description: string, color: string, status: string }) => (
+  <div className="group p-6 rounded-[30px] border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-all cursor-pointer relative overflow-hidden">
+    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br opacity-0 group-hover:opacity-20 transition-opacity" style={{ background: color }}></div>
+    <div className="relative z-10">
+      <div className="flex items-center justify-between mb-4">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white" style={{ background: color }}>
+          {icon}
+        </div>
+        <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full" style={{ background: `${color}20`, color }}>
+          {status}
+        </span>
+      </div>
+      <h4 className="text-lg font-bold uppercase mb-2 text-white">{title}</h4>
+      <p className="text-xs font-medium text-slate-400 leading-relaxed">{description}</p>
+    </div>
   </div>
 );
 
