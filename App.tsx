@@ -23,6 +23,8 @@ import AlertCenterPage from './components/pages/AlertCenterPage';
 import SettingsPage, { AppSettings, DEFAULT_SETTINGS } from './components/pages/SettingsPage';
 import ReportsPage from './components/pages/ReportsPage';
 import SystemHealthPage from './components/pages/SystemHealthPage';
+// ─── LANDING PAGE ──────────────────────────────────────────────────────────────
+import LandingPage from './components/LandingPage';
 
 // ─── PAGE ROUTING ─────────────────────────────────────────────────────────────
 export type PageId =
@@ -153,11 +155,11 @@ const fmtUptime = (s: number) => {
 };
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
-type AppState = 'standby' | 'live' | 'demo';
+type AppState = 'landing' | 'standby' | 'live' | 'demo';
 type BLEStatus = 'idle' | 'connecting' | 'connected' | 'disconnected' | 'unsupported' | 'error';
 
 const App: React.FC = () => {
-  const [appState,      setAppState]      = useState<AppState>('standby');
+  const [appState,      setAppState]      = useState<AppState>('landing');
   const [selectedNode,  setSelectedNode]  = useState<NodeConfig>(NODE_CONFIGS[0]);
   const [bleStatus,     setBleStatus]     = useState<BLEStatus>(isBLESupported() ? 'idle' : 'unsupported');
   const [bleError,      setBleError]      = useState('');
@@ -321,6 +323,11 @@ const App: React.FC = () => {
 
   const navigate = useCallback((p: PageId) => setPage(p), []);
 
+  // ─── Landing Page Navigation ──────────────────────────────────────────────────
+  const handleContinue = useCallback(() => {
+    setAppState('standby');
+  }, []);
+
   // ─── FEATURE 109: Command palette entries ─────────────────────────────────────
   const allPages: { id: PageId; label: string; hint: string }[] = [
     { id: 'overview',  label: 'Dashboard',        hint: 'Live sensor overview' },
@@ -341,6 +348,11 @@ const App: React.FC = () => {
   const cmdResults = cmdQuery
     ? allPages.filter(p => p.label.toLowerCase().includes(cmdQuery.toLowerCase()) || p.hint.toLowerCase().includes(cmdQuery.toLowerCase()))
     : allPages;
+
+  // ─── LANDING SCREEN ──────────────────────────────────────────────────────────
+  if (appState === 'landing') {
+    return <LandingPage onContinue={handleContinue} />;
+  }
 
   // ─── STANDBY SCREEN — node selector + BLE connect ────────────────────────────
   if (appState === 'standby') {
@@ -482,8 +494,8 @@ const App: React.FC = () => {
     { label: 'COMPOSITE',  value: `${risks.composite} / 100` },
     { label: 'RSSI',       value: data ? `${Math.round(data.rssi)} dBm` : '--' },
     { label: 'UPTIME',     value: fmtUptime(uptime) },
-    { label: 'NODE',       value: appState === 'demo' ? 'SIM-LAB' : selectedNode.short },
-    { label: 'STREAM',     value: appState === 'demo' ? 'SIM-LAB' : 'BLE·BRIDGE' },
+    { label: 'NODE',       value: appState === 'demo' ? 'SIM-LAB' : appState === 'standby' ? 'SELECT' : selectedNode.short },
+    { label: 'STREAM',     value: appState === 'demo' ? 'SIM-LAB' : appState === 'standby' ? 'IDLE' : 'BLE·BRIDGE' },
   ];
 
   // ─── SIDEBAR NAV ITEM ─────────────────────────────────────────────────────────
